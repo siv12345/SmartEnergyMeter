@@ -9,7 +9,7 @@ def truncate(n, decimals=0):
     multiplier = 10 ** decimals
     return int(n * multiplier) / multiplier
 
-data=tuyapower.deviceRaw('018065202cf43238c5a8', '192.168.0.86', 'ef2d47140c02257b', '3.3')['dps']
+data=tuyapower.deviceRaw('id', '10.10.10.10', 'key', '3.3')['dps']
 total='101'
 volt='20'
 amp='18'
@@ -25,6 +25,6 @@ print('Current:\t',data[amp],'\t  mA')
 print('Power:\t\t',truncate(data[watt]/10,1),'  W')
 print('State:\t\t','On' if data[switch]==True else 'Off')
 
-#deviceJSON=tuyapower.deviceJSON('018065202cf43238c5a8', '192.168.0.86', 'ef2d47140c02257b', '3.3')
-#(on, w, mA, V, err)=tuyapower.deviceInfo('018065202cf43238c5a8', '192.168.0.86', 'ef2d47140c02257b', '3.3')
-#tuyapower.devicePrint('018065202cf43238c5a8', '192.168.0.86', 'ef2d47140c02257b', '3.3')
+#deviceJSON=tuyapower.deviceJSON('id', '10.10.10.10', 'key', '3.3')
+#(on, w, mA, V, err)=tuyapower.deviceInfo('id', '10.10.10.10', 'key', '3.3')
+#tuyapower.devicePrint('id', '10.10.10.10', 'key', '3.3')

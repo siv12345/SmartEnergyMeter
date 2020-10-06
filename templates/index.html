@@ -1,47 +1,194 @@
 <!DOCTYPE html>
-   <head>
-      <title>Smart Solar Meter Readings</title>
-   </head>
+<html lang="en">
+        <style type="text/css">
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
 
-   <body>
-      <h1>Mahalaya Solar Plant FC133</h1>
-<style type="text/css">
-.tg  {border-collapse:collapse;border-spacing:0;}
-.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
-  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
-.tg .tg-0lax{text-align:left;vertical-align:top}
-</style>
-<table class="tg">
-<thead>
-  <tr>
-    <th class="tg-0lax">Attribute</th>
-    <th class="tg-0lax">Value</th>
-  </tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="tg-0lax">Voltage</td>
-    <td class="tg-0lax">{{ volt }}</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">Current</td>
-    <td class="tg-0lax">{{ amp }}</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">Power</td>
-    <td class="tg-0lax">{{ watt }}</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">State</td>
-    <td class="tg-0lax">{{ state }}</td>
-  </tr>
-  <tr>
-    <td class="tg-0lax">Total Units</td>
-    <td class="tg-0lax">{{ total }}</td>
-  </tr>
-</tbody>
-</table>
-   </body>
+body {
+  background-color: #3e94ec;
+  font-family: "Roboto", helvetica, arial, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  text-rendering: optimizeLegibility;
+}
+
+div.table-title {
+   display: block;
+  margin: auto;
+  max-width: 600px;
+  padding:5px;
+  width: 100%;
+}
+
+.table-title h3 {
+   color: #fafafa;
+   font-size: 30px;
+   font-weight: 400;
+   font-style:normal;
+   font-family: "Roboto", helvetica, arial, sans-serif;
+   text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+   text-transform:uppercase;
+}
+
+
+/*** Table Styles **/
+
+.table-fill {
+  background: white;
+  border-radius:3px;
+  border-collapse: collapse;
+  height: 320px;
+  margin: auto;
+  max-width: 600px;
+  padding:5px;
+  width: 100%;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  animation: float 5s infinite;
+}
+
+th {
+  color:#D5DDE5;;
+  background:#1b1e24;
+  border-bottom:4px solid #9ea7af;
+  border-right: 1px solid #343a45;
+  font-size:23px;
+  font-weight: 100;
+  padding:24px;
+  text-align:left;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  vertical-align:middle;
+}
+th:first-child {
+  border-top-left-radius:3px;
+}
+
+th:last-child {
+  border-top-right-radius:3px;
+  border-right:none;
+}
+
+tr {
+  border-top: 1px solid #C1C3D1;
+  border-bottom-: 1px solid #C1C3D1;
+  color:#666B85;
+  font-size:16px;
+  font-weight:normal;
+  text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
+}
+
+tr:hover td {
+  background:#4E5066;
+  color:#FFFFFF;
+  border-top: 1px solid #22262e;
+}
+
+tr:first-child {
+  border-top:none;
+}
+
+tr:last-child {
+  border-bottom:none;
+}
+
+tr:nth-child(odd) td {
+  background:#EBEBEB;
+}
+
+tr:nth-child(odd):hover td {
+  background:#4E5066;
+}
+tr:last-child td:first-child {
+  border-bottom-left-radius:3px;
+}
+
+tr:last-child td:last-child {
+  border-bottom-right-radius:3px;
+}
+
+td {
+  background:#FFFFFF;
+  padding:20px;
+  text-align:left;
+  vertical-align:middle;
+  font-weight:300;
+  font-size:18px;
+  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #C1C3D1;
+}
+
+td:last-child {
+  border-right: 0px;
+}
+
+th.text-left {
+  text-align: left;
+}
+
+th.text-center {
+  text-align: center;
+}
+
+th.text-right {
+  text-align: right;
+}
+
+td.text-left {
+  text-align: left;
+}
+
+td.text-center {
+  text-align: center;
+}
+
+td.text-right {
+  text-align: right;
+}
+
+        </style>
+<head>
+        <meta charset="utf-8" />
+        <title>Smart Solar Meter Reading</title>
+        <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+</head>
+   <H1 class="cell100" style="text-align:center;"><H1>
+        <body>
+                <div class="table-title">
+                <h3>Mahalaya Solar Plant FC133</h3>
+                </div>
+                <table class="table-fill">
+
+                <thead>
+                <tr>
+                <th class="text-left">Attributes</th>
+                <th class="text-left">Values</th>
+                </tr>
+                </thead>
+
+                <tbody class="table-hover">
+                <tr>
+                <td class="text-left">State</td>
+                <td class="text-left"><b>{{ state }}</b></td>
+                </tr>
+                <tr>
+                <td class="text-left">Voltage</td>
+                </tr>
+                <tr>
+                <td class="text-left">Current</td>
+                <td class="text-left"><b>{{ amp }}</b></td>
+                </tr>
+                <tr>
+                <td class="text-left">Power</td>
+                <td class="text-left"><b>{{ watt }}</td>
+                </tr>
+                <tr>
+                <td class="text-left">Units Today</td>
+                <td class="text-left"><b>{{ today }}</b></td>
+                </tr>
+                <tr>
+                <td class="text-left">Total Units</td>
+                <td class="text-left"><b>{{ total }}</b></td>
+                </tr>
+                </tbody>
+                </table>
+        </body>
 </html>
+                <td class="text-left"><b>{{ volt }}</b></td>

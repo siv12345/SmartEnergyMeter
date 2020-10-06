@@ -8,6 +8,17 @@ def truncate(n, decimals=0):
         multiplier = 10 ** decimals
         return int(n * multiplier) / multiplier
 
+def leapYear(year):
+    if (year % 4) == 0:
+        if (year % 100) == 0:
+            if (year % 400) == 0:
+                return True
+            else:
+                return False
+        else:
+             return True
+    else:
+        return False
 
 old=3676.4
 data=total=volt=today=amp=watt=switch=0
@@ -15,6 +26,8 @@ data=total=volt=today=amp=watt=switch=0
 @app.route("/")
 def meter():
         day=int(dt.datetime.now().strftime("%d"))
+        month=int(dt.datetime.now().strftime("%m"))
+        year=int(dt.datetime.now().strftime("%y"))
 
         f=open("/home/pi/pythonTuya/day.dat","rb")
         d=pickle.load(f)
@@ -28,7 +41,16 @@ def meter():
         switch='On' if data['1']==True else 'Off'
 
         d[day]=truncate(old+data['101']/100,2)
-        today=str(truncate(old+data['101']/100-d[day-1],2))+'  kWh'
+        if month==3 and day==1 and leapYear(year):
+                today=str(truncate(old+data['101']/100-d[29],2))+'  kWh'
+        else if month==3 and day==1 and !(leapYear(year)):
+                today=str(truncate(old+data['101']/100-d[28],2))+'  kWh'
+        else if month in [1,3,5,7,8,10,12] and day==1:
+                today=str(truncate(old+data['101']/100-d[31],2))+'  kWh'
+        else if month not in [1,3,5,7,8,10,12] and day==1:
+                today=str(truncate(old+data['101']/100-d[30],2))+'  kWh'
+        else:
+                today=str(truncate(old+data['101']/100-d[day-1],2))+'  kWh'
 
         f=open("day.dat","wb")
         pickle.dump(d,f)

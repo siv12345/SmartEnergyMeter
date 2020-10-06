@@ -41,13 +41,13 @@ def meter():
         switch='On' if data['1']==True else 'Off'
 
         d[day]=truncate(old+data['101']/100,2)
-        if month==3 and day==1 and leapYear(year):
+        if month==3 and day==1 and leapYear(year)==True:
                 today=str(truncate(old+data['101']/100-d[29],2))+'  kWh'
-        else if month==3 and day==1 and !(leapYear(year)):
+        else if month==3 and day==1 and leapYear(year)==False:
                 today=str(truncate(old+data['101']/100-d[28],2))+'  kWh'
-        else if month in [1,3,5,7,8,10,12] and day==1:
+        else if month not in [1,5,7,8,10,12] and day==1:
                 today=str(truncate(old+data['101']/100-d[31],2))+'  kWh'
-        else if month not in [1,3,5,7,8,10,12] and day==1:
+        else if month in [1,5,7,8,10,12] and day==1:
                 today=str(truncate(old+data['101']/100-d[30],2))+'  kWh'
         else:
                 today=str(truncate(old+data['101']/100-d[day-1],2))+'  kWh'

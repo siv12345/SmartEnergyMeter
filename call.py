@@ -1,6 +1,13 @@
 #!/usr/bin/env python3
 from flask import Flask, render_template
 import datetime as dt, pickle, tuyapower
+import platform    # For getting the operating system name
+import subprocess  # For executing a shell command
+
+def ping(host):
+    param = '-n' if platform.system().lower()=='windows' else '-c'
+    command = ['ping', param, '2', host]
+    return subprocess.call(command) == 0
 
 app = Flask(__name__)
 
@@ -33,6 +40,11 @@ def meter():
         f=open("/home/pi/pythonTuya/day.dat","rb")
         d=pickle.load(f)
         f.close()
+
+        if ping('192.168.0.86')==False:
+                templateData = {'volt' : '-','amp' : '-','watt' : '-','state' : 'Offline - GridDown','total' : str(d[day]),'today': '-'}
+                legend=labels=values=[]
+                return render_template('index.html', values=values, labels=labels, legend=legend, **templateData)
 
         data=tuyapower.deviceRaw('018065202cf43238c5a8', '192.168.0.86', 'ef2d47140c02257b', '3.3')['dps']
 

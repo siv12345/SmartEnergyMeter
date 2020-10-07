@@ -41,6 +41,7 @@ def meter():
         d=pickle.load(f)
         f.close()
 
+
         if ping('192.168.0.86')==False:
                 templateData = {'volt' : '-','amp' : '-','watt' : '-','state' : 'Offline - GridDown','total' : str(d[day]),'today': '-'}
                 legend=labels=values=[]
@@ -55,6 +56,15 @@ def meter():
         switch='Online' if data['18']!=0 else 'Offline - SunDown'
 
         d[day]=truncate(old+data['101']/100,2)
+        if month==2 and day==29:
+                d[0]=d[day]
+        elif month==2 and day==28:
+                d[0]=d[day]
+        elif month not in [1,3,5,7,8,10,12] and day==31:
+                d[0]=d[day]
+        elif month in [1,3,5,7,8,10,12] and day==30:
+                d[0]=d[day]
+
         if month==3 and day==1 and leapYear(year)==True:
                 today=str(truncate(old+data['101']/100-d[29],2))+'  kWh'
         elif month==3 and day==1 and leapYear(year)==False:
@@ -66,7 +76,7 @@ def meter():
         else:
                 today=str(truncate(old+data['101']/100-d[day-1],2))+'  kWh'
 
-        f=open("day.dat","wb")
+        f=open("/home/pi/pythonTuya/day.dat","wb")
         pickle.dump(d,f)
         f.close()
 
@@ -78,14 +88,21 @@ def meter():
         'total' : total,
         'today': today
         }
+
+        f=open("/home/pi/pythonTuya/current.dat","rb")
+        power=pickle.load(f)
+        f.close()
+
         legend = 'Daily Units'
         s=dict()
-        for i,j in d.items():
-                if i>=1 and i<=day: s[i]=j
+        for i,j in list(d.items()):
+                if i>=0 and i<=day: s[i]=j
         labels = list(s.keys())[1:]
         t=list(s.values())
         values = [truncate(abs(j-i),2) for i, j in zip(t[:-1], t[1:])]
-        return render_template('index.html', values=values, labels=labels, legend=legend, **templateData)
+        col=list(power.keys())
+        row=list(power.values())
+        return render_template('index.html', values=values, labels=labels, legend=legend, x=col, y=row, **templateData)
 
 if __name__ == "__main__":
         app.run(host='0.0.0.0', port=90, debug=True)

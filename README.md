@@ -7,4 +7,4 @@ Displays Units generated (Total, Daily). Used pickle module to store values.
 # Work in progress
 Add Historical data tracking (monthly/yearly stats) and charts/graphs
 
-![WebPage](solar.png)
+![Chart](solar2.png)

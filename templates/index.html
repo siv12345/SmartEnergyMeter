@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-        <style type="text/css">
+<style type="text/css">
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,500,700,300,100);
 
 body {
@@ -36,7 +36,7 @@ div.table-title {
   background: white;
   border-radius:3px;
   border-collapse: collapse;
-  height: 320px;
+  height: 390px;
   margin: auto;
   max-width: 600px;
   padding:5px;
@@ -57,6 +57,7 @@ th {
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   vertical-align:middle;
 }
+
 th:first-child {
   border-top-left-radius:3px;
 }
@@ -96,6 +97,7 @@ tr:nth-child(odd) td {
 tr:nth-child(odd):hover td {
   background:#4E5066;
 }
+
 tr:last-child td:first-child {
   border-bottom-left-radius:3px;
 }
@@ -111,7 +113,6 @@ td {
   vertical-align:middle;
   font-weight:300;
   font-size:18px;
-  text-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
   border-right: 1px solid #C1C3D1;
 }
 
@@ -143,18 +144,20 @@ td.text-right {
   text-align: right;
 }
 
-        </style>
+</style>
 <head>
         <meta charset="utf-8" />
         <title>Smart Solar Meter Reading</title>
-        <meta name="viewport" content="initial-scale=1.0; maximum-scale=1.0; width=device-width;">
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
         <meta http-equiv="refresh" content="30" >
         <link rel="icon" href="/static/tick.png" type="image/icon type">
+        <script src='static/Chart.min.js'></script>
 </head>
-   <H1 class="cell100" style="text-align:center;"><H1>
+
+<H1 class="cell100" style="text-align:center;"></H1>
         <body>
                 <div class="table-title">
-                <h3>Mahalaya Solar Plant FC133</h3>
+                <h3>Mahalaya Solar Plant</h3>
                 </div>
                 <table class="table-fill">
 
@@ -166,31 +169,93 @@ td.text-right {
                 </thead>
 
                 <tbody class="table-hover">
+
                 <tr>
-                <td class="text-left">State</td>
+                <td class="text-left"><b>State</b></td>
                 <td class="text-left"><b>{{ state }}</b></td>
                 </tr>
                 <tr>
-                <td class="text-left">Voltage</td>
+                <td class="text-left"><b>Voltage</b></td>
+                <td class="text-left"><b>{{ volt }}</b></td>
                 </tr>
                 <tr>
-                <td class="text-left">Current</td>
+                <td class="text-left"><b>Current</b></td>
                 <td class="text-left"><b>{{ amp }}</b></td>
                 </tr>
                 <tr>
-                <td class="text-left">Power</td>
+                <td class="text-left"><b>Power</b></td>
                 <td class="text-left"><b>{{ watt }}</td>
                 </tr>
                 <tr>
-                <td class="text-left">Units Today</td>
+                <td class="text-left"><b>Units Today</b></td>
                 <td class="text-left"><b>{{ today }}</b></td>
                 </tr>
                 <tr>
-                <td class="text-left">Total Units</td>
+                <td class="text-left"><b>Total Units</br>since 19th Oct'19</b></td>
                 <td class="text-left"><b>{{ total }}</b></td>
                 </tr>
+
                 </tbody>
                 </table>
+</br></br>
+<div class="table-fill">
+<canvas id="myChart" width="600" height="400"></canvas>
+<script>
+// Global parameters:
+// do not resize the chart canvas when its container does (keep at 600x400px)
+Chart.defaults.global.responsive = true;
+Chart.defaults.global.maintainAspectRatio = false;
+
+// define the chart data
+var chartData = {
+  labels : [{% for item in labels %}
+             "{{item}}",
+            {% endfor %}],
+  datasets : [{
+      label: '{{ legend }}',
+      fill: true,
+      lineTension: 0.1,
+      backgroundColor: "rgba(75,192,192,0.4)",
+      borderColor: "rgba(75,192,192,1)",
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: "rgba(75,192,192,1)",
+      pointBackgroundColor: "#fff",
+      pointBorderWidth: 4,
+      pointHoverRadius: 10,
+      pointHoverBackgroundColor: "rgba(75,192,192,1)",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
+      pointHoverBorderWidth: 4,
+      pointRadius: 5,
+      pointHitRadius: 15,
+      data : [{% for item in values %}
+                {{item}},
+              {% endfor %}],
+      spanGaps: false
+  }]
+}
+
+// get chart canvas
+var ctx = document.getElementById("myChart").getContext("2d");
+
+// create the chart using the chart canvas
+var myChart = new Chart(ctx, {
+  type: 'line',
+  data: chartData,
+  options: {
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+</div>
         </body>
 </html>
-                <td class="text-left"><b>{{ volt }}</b></td>

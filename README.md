@@ -9,4 +9,4 @@ Add Historical data tracking (monthly/yearly stats) and charts/graphs
 
 ![WebPage](solar.png)
 
-![Chart](chart.png)
+![Chart](chart_js.png)

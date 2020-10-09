@@ -44,7 +44,7 @@ div.table-title {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   animation: float 5s infinite;
 }
-
+ 
 th {
   color:#D5DDE5;;
   background:#1b1e24;
@@ -61,12 +61,12 @@ th {
 th:first-child {
   border-top-left-radius:3px;
 }
-
+ 
 th:last-child {
   border-top-right-radius:3px;
   border-right:none;
 }
-
+  
 tr {
   border-top: 1px solid #C1C3D1;
   border-bottom-: 1px solid #C1C3D1;
@@ -75,13 +75,13 @@ tr {
   font-weight:normal;
   text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
 }
-
+ 
 tr:hover td {
   background:#4E5066;
   color:#FFFFFF;
   border-top: 1px solid #22262e;
 }
-
+ 
 tr:first-child {
   border-top:none;
 }
@@ -89,11 +89,11 @@ tr:first-child {
 tr:last-child {
   border-bottom:none;
 }
-
+ 
 tr:nth-child(odd) td {
   background:#EBEBEB;
 }
-
+ 
 tr:nth-child(odd):hover td {
   background:#4E5066;
 }
@@ -101,11 +101,11 @@ tr:nth-child(odd):hover td {
 tr:last-child td:first-child {
   border-bottom-left-radius:3px;
 }
-
+ 
 tr:last-child td:last-child {
   border-bottom-right-radius:3px;
 }
-
+ 
 td {
   background:#FFFFFF;
   padding:20px;
@@ -144,59 +144,156 @@ td.text-right {
   text-align: right;
 }
 
+	
 </style>
 <head>
-        <meta charset="utf-8" />
-        <title>Smart Solar Meter Reading</title>
-        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
-        <meta http-equiv="refresh" content="30" >
-        <link rel="icon" href="/static/tick.png" type="image/icon type">
-        <script src='static/Chart.min.js'></script>
+	<meta charset="utf-8" />
+	<title>Smart Solar Meter Reading</title>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+	<meta http-equiv="refresh" content="18" >
+	<link rel="icon" href="/static/tick.png" type="image/icon type">
+	<script src='static/Chart.min.js'></script>
 </head>
 
-<H1 class="cell100" style="text-align:center;"></H1>
-        <body>
-                <div class="table-title">
-                <h3>Mahalaya Solar Plant</h3>
-                </div>
-                <table class="table-fill">
+	<body>
+		<div class="table-title">
+		<h3>Mahalaya Solar Plant
+		
+		<H5 class="cell100">
+		<label for="file">Today's Goal: {{ today }} of 12 kWh</label>
+		<progress id="file" value={{ today }} max="12"></progress>
+		</H5>
+		
+		<H5 class="cell100" style="color:#d60000;">
+                Today's Losses: {{ loss }}
+                </H5>
 
-                <thead>
-                <tr>
-                <th class="text-left">Attributes</th>
-                <th class="text-left">Values</th>
-                </tr>
-                </thead>
+		</h3>
+		</div>
+		
+		<table class="table-fill">
 
-                <tbody class="table-hover">
+		<thead>
+		<tr>
+		<th class="text-left">Attributes</th>
+		<th class="text-left">Values</th>
+		</tr>
+		</thead>
 
-                <tr>
-                <td class="text-left"><b>State</b></td>
-                <td class="text-left"><b>{{ state }}</b></td>
-                </tr>
-                <tr>
-                <td class="text-left"><b>Voltage</b></td>
-                <td class="text-left"><b>{{ volt }}</b></td>
-                </tr>
-                <tr>
-                <td class="text-left"><b>Current</b></td>
-                <td class="text-left"><b>{{ amp }}</b></td>
-                </tr>
-                <tr>
-                <td class="text-left"><b>Power</b></td>
-                <td class="text-left"><b>{{ watt }}</td>
-                </tr>
-                <tr>
-                <td class="text-left"><b>Units Today</b></td>
-                <td class="text-left"><b>{{ today }}</b></td>
-                </tr>
-                <tr>
+		<tbody class="table-hover">
+		
+		<tr>
+		<td class="text-left"><b>State</b></td>
+		<td class="text-left"><b>{{ state }}</b></td>
+		</tr>
+		<tr>
+		<td class="text-left"><b>Voltage</b></td>
+		<td class="text-left"><b>{{ volt }}</b></td>
+		</tr>
+		<tr>
+		<td class="text-left"><b>Current</b></td>
+		<td class="text-left"><b>{{ amp }}</b></td>
+		</tr>
+		<tr>
+		<td class="text-left"><b>Power</b></td>
+		<td class="text-left"><b>{{ watt }}</td>
+		</tr>
+		<tr>
+		<td class="text-left"><b>Units Today</b></td>
+		<td class="text-left"><b>{{ today }}</b></td>
+		</tr>
+		<tr>
                 <td class="text-left"><b>Total Units</br>since 19th Oct'19</b></td>
                 <td class="text-left"><b>{{ total }}</b></td>
                 </tr>
+		
+		</tbody>
+		</table>
+</br></br>
+<div class="table-fill">
+<canvas id="watt" width="600" height="400"></canvas>
+<script>
+// Global parameters:
+// do not resize the chart canvas when its container does (keep at 600x400px)
+Chart.defaults.global.responsive = true;
+Chart.defaults.global.maintainAspectRatio = false;
 
-                </tbody>
-                </table>
+// define the chart data
+var ampData = {
+  labels : [{% for item in x %}
+             "{{item}}",
+            {% endfor %}],
+  datasets : [{
+      label: 'Power Levels Today',
+      fill: true,
+      lineTension: 0.6,
+      backgroundColor: "rgba(142,252,142,0.65)",
+      borderColor: "rgba(55,150,85,1)",
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: "rgba(11,102,38,1)",
+      pointBackgroundColor: "#fff",
+      pointBorderWidth: 2,
+      pointHoverRadius: 4,
+      pointHoverBackgroundColor: "rgba(152,252,152,1)",
+      pointHoverBorderColor: "rgba(220,220,220,1)",
+      pointHoverBorderWidth: 2,
+      pointRadius: 2,
+      pointHitRadius: 6,
+      data : [{% for item in y %}
+                {{item}},
+              {% endfor %}],
+      spanGaps: false
+  }, { 
+        data: [{% for item in ideal %}
+                {{item}},
+              {% endfor %}],
+        label: "Ideal Power Line",
+        borderColor: "#ff0000",
+        fill: true,
+	lineTension: 0.6,
+      backgroundColor: "rgba(255,0,0,0.2)",
+      borderColor: "rgba(255,0,0,1)",
+      borderCapStyle: 'butt',
+      borderDash: [],
+      borderDashOffset: 0.0,
+      borderJoinStyle: 'miter',
+      pointBorderColor: "rgba(255,0,0,0.8)",
+      pointBackgroundColor: "#fff",
+      pointBorderWidth: 1,
+      pointHoverRadius: 3,
+      pointHoverBackgroundColor: "rgba(255,0,0,0.8)",
+      pointHoverBorderColor: "rgba(220,220,220,0.8)",
+      pointHoverBorderWidth: 2,
+      pointRadius: 2,
+      pointHitRadius: 4
+      }
+]
+}
+
+// get chart canvas
+var ctx = document.getElementById("watt").getContext("2d");
+
+// create the chart using the chart canvas
+var watt = new Chart(ctx, {
+  type: 'line',
+  data: ampData,
+  options: {
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+});
+</script>
+</div>
+
 </br></br>
 <div class="table-fill">
 <canvas id="myChart" width="600" height="400"></canvas>
@@ -215,19 +312,20 @@ var chartData = {
       label: '{{ legend }}',
       fill: true,
       lineTension: 0.1,
-      backgroundColor: "rgba(75,192,192,0.4)",
-      borderColor: "rgba(75,192,192,1)",
+      barPercentage: 0.5, barThickness: 14, maxBarThickness: 18, minBarLength: 8,
+      backgroundColor: "rgba(0,0,128,0.6)",
+      borderColor: "rgba(0,0,128,1)",
       borderCapStyle: 'butt',
       borderDash: [],
       borderDashOffset: 0.0,
       borderJoinStyle: 'miter',
-      pointBorderColor: "rgba(75,192,192,1)",
+      pointBorderColor: "rgba(0,0,128,1)",
       pointBackgroundColor: "#fff",
-      pointBorderWidth: 4,
+      borderWidth: 4,
       pointHoverRadius: 10,
-      pointHoverBackgroundColor: "rgba(75,192,192,1)",
-      pointHoverBorderColor: "rgba(220,220,220,1)",
-      pointHoverBorderWidth: 4,
+      hoverBackgroundColor: "rgba(220,92,92,1)",
+      hoverBorderColor: "rgba(220,220,220,1)",
+      hoverBorderWidth: 4,
       pointRadius: 5,
       pointHitRadius: 15,
       data : [{% for item in values %}
@@ -236,13 +334,13 @@ var chartData = {
       spanGaps: false
   }]
 }
-
+ 
 // get chart canvas
 var ctx = document.getElementById("myChart").getContext("2d");
-
+ 
 // create the chart using the chart canvas
 var myChart = new Chart(ctx, {
-  type: 'line',
+  type: 'bar',
   data: chartData,
   options: {
         responsive: true,
@@ -255,7 +353,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>
-</div>
-        </body>
+</script>	
+</div>	
+	</body>
 </html>

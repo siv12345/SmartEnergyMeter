@@ -44,7 +44,7 @@ div.table-title {
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
   animation: float 5s infinite;
 }
- 
+
 th {
   color:#D5DDE5;;
   background:#1b1e24;
@@ -61,12 +61,12 @@ th {
 th:first-child {
   border-top-left-radius:3px;
 }
- 
+
 th:last-child {
   border-top-right-radius:3px;
   border-right:none;
 }
-  
+
 tr {
   border-top: 1px solid #C1C3D1;
   border-bottom-: 1px solid #C1C3D1;
@@ -75,13 +75,13 @@ tr {
   font-weight:normal;
   text-shadow: 0 1px 1px rgba(256, 256, 256, 0.1);
 }
- 
+
 tr:hover td {
   background:#4E5066;
   color:#FFFFFF;
   border-top: 1px solid #22262e;
 }
- 
+
 tr:first-child {
   border-top:none;
 }
@@ -89,11 +89,11 @@ tr:first-child {
 tr:last-child {
   border-bottom:none;
 }
- 
+
 tr:nth-child(odd) td {
   background:#EBEBEB;
 }
- 
+
 tr:nth-child(odd):hover td {
   background:#4E5066;
 }
@@ -101,11 +101,11 @@ tr:nth-child(odd):hover td {
 tr:last-child td:first-child {
   border-bottom-left-radius:3px;
 }
- 
+
 tr:last-child td:last-child {
   border-bottom-right-radius:3px;
 }
- 
+
 td {
   background:#FFFFFF;
   padding:20px;
@@ -144,71 +144,108 @@ td.text-right {
   text-align: right;
 }
 
-	
+
 </style>
 <head>
-	<meta charset="utf-8" />
-	<title>Smart Solar Meter Reading</title>
-	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
-	<meta http-equiv="refresh" content="18" >
-	<link rel="icon" href="/static/tick.png" type="image/icon type">
-	<script src='static/Chart.min.js'></script>
+        <meta charset="utf-8" />
+        <title>Smart Solar Meter Reading</title>
+        <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, width=device-width">
+        <meta http-equiv="refresh" content="40" >
+        <link rel="icon" href="/static/tick.png" type="image/icon type">
+        <script src='static/Chart.min.js'></script>
+        <script src='static/jquery-3.5.1.min.js'></script>
 </head>
 
-	<body>
-		<div class="table-title">
-		<h3>Mahalaya Solar Plant
-		
-		<H5 class="cell100">
-		<label for="file">Today's Goal: {{ today }} of 12 kWh</label>
-		<progress id="file" value={{ today }} max="12"></progress>
-		</H5>
-		
-		<H5 class="cell100" style="color:#d60000;">
-                Today's Losses: {{ loss }}
+        <body>
+                <div class="table-title">
+                <h3>Mahalaya Solar Plant
+                <h4 style="color:#505050;"><div id="clockbox"></div></h4>
+
+<script type="text/javascript">
+var tday=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var tmonth=["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+function GetClock(){
+var d=new Date();
+var nday=d.getDay(),nmonth=d.getMonth(),ndate=d.getDate(),nyear=d.getFullYear();
+var nhour=d.getHours(),nmin=d.getMinutes(),nsec=d.getSeconds(),ap;
+
+if(nhour==0){ap=" AM";nhour=12;}
+else if(nhour<12){ap=" AM";}
+else if(nhour==12){ap=" PM";}
+else if(nhour>12){ap=" PM";nhour-=12;}
+
+if(nmin<=9) nmin="0"+nmin;
+if(nsec<=9) nsec="0"+nsec;
+
+var clocktext=""+tday[nday]+", "+tmonth[nmonth]+" "+ndate+", "+nyear+" "+nhour+":"+nmin+":"+nsec+ap+"";
+document.getElementById('clockbox').innerHTML=clocktext;
+}
+
+GetClock();
+setInterval(GetClock,1000);
+</script>
+                <H5 class="cell100">
+                <label for="file">Today's Goal: {{ today }} of 12 kWh</label>
+                <progress id="file" value={{ today }} max="12"></progress>
                 </H5>
 
-		</h3>
-		</div>
-		
-		<table class="table-fill">
+                <H5 class="cell100">
+                Today's Losses:<span style="color:#E61111"> {{ loss }} </span> - (Clouds/GridDown)
+                </H5>
 
-		<thead>
-		<tr>
-		<th class="text-left">Attributes</th>
-		<th class="text-left">Values</th>
-		</tr>
-		</thead>
+                <h5 class="weather"> Weather Conditions Unavailable</h5>
+<script>
+    $.getJSON('http://api.openweathermap.org/data/2.5/weather?lat=12.97&lon=77.69&appid=791882640e1ccfc1a47f35223af7357f', function(data) {
 
-		<tbody class="table-hover">
-		
-		<tr>
-		<td class="text-left"><b>State</b></td>
-		<td class="text-left"><b>{{ state }}</b></td>
-		</tr>
-		<tr>
-		<td class="text-left"><b>Voltage</b></td>
-		<td class="text-left"><b>{{ volt }}</b></td>
-		</tr>
-		<tr>
-		<td class="text-left"><b>Current</b></td>
-		<td class="text-left"><b>{{ amp }}</b></td>
-		</tr>
-		<tr>
-		<td class="text-left"><b>Power</b></td>
-		<td class="text-left"><b>{{ watt }}</td>
-		</tr>
-		<tr>
-		<td class="text-left"><b>Units Today</b></td>
-		<td class="text-left"><b>{{ today }}</b></td>
-		</tr>
-		<tr>
+        var text = `Weather Conditions: ${String(data.weather[0].description).replace(/(^\w{1})|(\s{1}\w{1})/g, match => match.toUpperCase())} - ${Math.round(data.main.temp) - 273}&#176;C with clouds at ${data.clouds.all}% and visibility at ${data.visibility/1000}km`
+
+
+        $(".weather").html(text);
+    });
+</script>
+
+                </h3>
+                </div>
+
+                <table class="table-fill">
+
+                <thead>
+                <tr>
+                <th class="text-left">Attributes</th>
+                <th class="text-left">Values</th>
+                </tr>
+                </thead>
+
+                <tbody class="table-hover">
+
+                <tr>
+                <td class="text-left"><b>State</b></td>
+                <td class="text-left"><b>{{ state }}</b></td>
+                </tr>
+                <tr>
+                <td class="text-left"><b>Voltage</b></td>
+                <td class="text-left"><b>{{ volt }}</b></td>
+                </tr>
+                <tr>
+                <td class="text-left"><b>Current</b></td>
+                <td class="text-left"><b>{{ amp }}</b></td>
+                </tr>
+                <tr>
+                <td class="text-left"><b>Power</b></td>
+                <td class="text-left"><b>{{ watt }}</td>
+                </tr>
+                <tr>
+                <td class="text-left"><b>Units Today</b></td>
+                <td class="text-left"><b>{{ today }}</b></td>
+                </tr>
+                <tr>
                 <td class="text-left"><b>Total Units</br>since 19th Oct'19</b></td>
                 <td class="text-left"><b>{{ total }}</b></td>
                 </tr>
-		
-		</tbody>
-		</table>
+
+                </tbody>
+                </table>
 </br></br>
 <div class="table-fill">
 <canvas id="watt" width="600" height="400"></canvas>
@@ -227,17 +264,17 @@ var ampData = {
       label: 'Power Levels Today',
       fill: true,
       lineTension: 0.6,
-      backgroundColor: "rgba(142,252,142,0.65)",
+      backgroundColor: "rgba(102,255,162,0.65)",
       borderColor: "rgba(55,150,85,1)",
       borderCapStyle: 'butt',
       borderDash: [],
       borderDashOffset: 0.0,
       borderJoinStyle: 'miter',
-      pointBorderColor: "rgba(11,102,38,1)",
+      pointBorderColor: "rgba(55,150,85,1)",
       pointBackgroundColor: "#fff",
       pointBorderWidth: 2,
       pointHoverRadius: 4,
-      pointHoverBackgroundColor: "rgba(152,252,152,1)",
+      pointHoverBackgroundColor: "rgba(220,92,92,1)",
       pointHoverBorderColor: "rgba(220,220,220,1)",
       pointHoverBorderWidth: 2,
       pointRadius: 2,
@@ -246,30 +283,7 @@ var ampData = {
                 {{item}},
               {% endfor %}],
       spanGaps: false
-  }, { 
-        data: [{% for item in ideal %}
-                {{item}},
-              {% endfor %}],
-        label: "Ideal Power Line",
-        borderColor: "#ff0000",
-        fill: true,
-	lineTension: 0.6,
-      backgroundColor: "rgba(255,0,0,0.2)",
-      borderColor: "rgba(255,0,0,1)",
-      borderCapStyle: 'butt',
-      borderDash: [],
-      borderDashOffset: 0.0,
-      borderJoinStyle: 'miter',
-      pointBorderColor: "rgba(255,0,0,0.8)",
-      pointBackgroundColor: "#fff",
-      pointBorderWidth: 1,
-      pointHoverRadius: 3,
-      pointHoverBackgroundColor: "rgba(255,0,0,0.8)",
-      pointHoverBorderColor: "rgba(220,220,220,0.8)",
-      pointHoverBorderWidth: 2,
-      pointRadius: 2,
-      pointHitRadius: 4
-      }
+  }
 ]
 }
 
@@ -313,13 +327,13 @@ var chartData = {
       fill: true,
       lineTension: 0.1,
       barPercentage: 0.5, barThickness: 14, maxBarThickness: 18, minBarLength: 8,
-      backgroundColor: "rgba(0,0,128,0.6)",
-      borderColor: "rgba(0,0,128,1)",
+      backgroundColor: "rgba(51,255,51,0.28)",
+      borderColor: "rgba(51,255,51,1)",
       borderCapStyle: 'butt',
       borderDash: [],
       borderDashOffset: 0.0,
       borderJoinStyle: 'miter',
-      pointBorderColor: "rgba(0,0,128,1)",
+      pointBorderColor: "rgba(51,255,51,1)",
       pointBackgroundColor: "#fff",
       borderWidth: 4,
       pointHoverRadius: 10,
@@ -334,10 +348,10 @@ var chartData = {
       spanGaps: false
   }]
 }
- 
+
 // get chart canvas
 var ctx = document.getElementById("myChart").getContext("2d");
- 
+
 // create the chart using the chart canvas
 var myChart = new Chart(ctx, {
   type: 'bar',
@@ -353,7 +367,7 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-</script>	
-</div>	
-	</body>
+</script>
+</div>
+        </body>
 </html>

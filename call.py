@@ -121,13 +121,13 @@ def meter():
         switch='Online' if data['18']!=0 else 'Offline - No Power / Sundown'
 
         d[day]=truncate(old+data['101']/100,2)
-        if month==2 and day==29:
+        if month==2 and day==29 and dt.datetime.now().strftime("%H:%M")=="23:59":
                 d[0]=d[day]
-        elif month==2 and day==28:
+        elif month==2 and day==28 and dt.datetime.now().strftime("%H:%M")=="23:59":
                 d[0]=d[day]
-        elif month not in [1,3,5,7,8,10,12] and day==31:
+        elif month in [1,3,5,7,8,10,12] and day==31 and dt.datetime.now().strftime("%H:%M")=="23:59":
                 d[0]=d[day]
-        elif month in [1,3,5,7,8,10,12] and day==30:
+        elif month not in [1,3,5,7,8,10,12] and day==30 and dt.datetime.now().strftime("%H:%M")=="23:59":
                 d[0]=d[day]
 
         if month==3 and day==1 and leapYear(year)==True:

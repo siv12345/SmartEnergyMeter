@@ -1,14 +1,10 @@
-// PZEM-014/016 AC Energy Meter with LCD By Solarduino 
-
-// Note Summary
-// Note :  Safety is very important when dealing with electricity. We take no responsibilities while you do it at your own risk.
-// Note :  This AC Energy Monitoring Code needs PZEM-014 or PZEM-016 AC Energy Meter to measure values and Arduio Mega / UNO for communication and display. 
-// Note :  This Code monitors AC Voltage, current, Power, Energy, Frequency, and Power Factor.
-// Note :  The values shown in LCD Display is refreshed every second.
-// Note :  The values are calculated internally by energy meter and function of Arduino is only to read the value and for further calculation. 
-// Note :  You need to download and install (modified) Modbus Master library at our website (https://solarduino.com/pzem-014-or-016-ac-energy-meter-with-arduino/ )
-// Note :  The Core of the code was from EvertDekker.com 2018 which based on the example from http://solar4living.com/pzem-arduino-modbus.htm
-// Note :  Solarduino only amend necessary code and integrate with LCD Display Shield.
+// PZEM-016 <-> RS485 to TTL (4 conductor out) -> Arduino Mega 2560 + LCD Shield
+// Safety is very important when dealing with electricity. 
+// Code monitors AC Voltage, current, Power, Energy, Frequency, and Power Factor.
+// LCD Display is refreshed every second.
+// Values are calculated internally by energy meter and function of Arduino is only to read the value and for further calculation. 
+// Modbus Master library is required.
+// Core of the code was from EvertDekker.com 2018 which based on the example from http://solar4living.com/pzem-arduino-modbus.htm
 
 /*/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////*/////////////*/
 
@@ -213,32 +209,32 @@ void loop()
             LCD.setCursor(0,0);                                                                           /* Set cursor to first colum 0 and second row 1  */
             LCD.print(PZEMVoltage, 1);                                                                    /* Display Voltage on LCD Display with 1 decimal*/
             LCD.print("V    ");
-            LCD.setCursor(9,0); 
-            LCD.print(PZEMHz, 1);  
-            LCD.print("Hz   ");
-            LCD.setCursor(0,1);
+            LCD.setCursor(9,0);
             LCD.print(PZEMCurrent, 2);  
-            LCD.print("A    ");
-            LCD.setCursor(9,1); 
+            LCD.print("A    "); 
+            LCD.setCursor(0,1);
             LCD.print(PZEMPower, 1);
             LCD.print("W     ");
+            LCD.setCursor(9,1);
+            LCD.print(PZEMEnergy, 0);
+            LCD.print("Wh    ");
             startMillisLCD = currentMillisLCD ;                                                           /* Set the starting point again for next counting time */
             }
 
             if( page ==2)
             {
             LCD.setCursor(0,0);                                                                           /* Set cursor to first colum 0 and second row 1  */
-            LCD.print(PZEMCurrent, 2);  
-            LCD.print("A    ");
-            LCD.setCursor(9,0); 
             LCD.print(PZEMPower, 1);
             LCD.print("W     ");
+            LCD.setCursor(9,0);
+            LCD.print(PZEMEnergy, 0);
+            LCD.print("Wh    ");
             LCD.setCursor(0,1);
             LCD.print(PZEMPf, 2);  
             LCD.print("PF    ");
             LCD.setCursor(9,1); 
-            LCD.print(PZEMEnergy, 0);
-            LCD.print("Wh    ");
+            LCD.print(PZEMHz, 1);  
+            LCD.print("Hz   ");
             startMillisLCD = currentMillisLCD ;  
             }
           }

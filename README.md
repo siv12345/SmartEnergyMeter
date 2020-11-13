@@ -9,6 +9,10 @@ Added Historical data tracking (monthly/yearly stats) and charts/graphs
 Estimation of losses
 Weather Data and clock
 
+## To do list
+Sinric integration for alexa control
+ESP32 port
+
 # WebSite
 ![WebPage](Table.png)
 ![Chart](chart_js_graph.png)

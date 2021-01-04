@@ -171,37 +171,27 @@ def meter():
     if month == 3 and day == 1 and leapYear(year) == True:
         today = str(truncate(old + data['101'] / 100 - d[29], 2)) \
             + '  kWh'
-        if dt.datetime.now().strftime('%H:%M')[:-1] == '00:0':
-            d[0] = d[29]
+        d[0] = d[29]
+
     elif month == 3 and day == 1 and leapYear(year) == False:
         today = str(truncate(old + data['101'] / 100 - d[28], 2)) \
             + '  kWh'
-        if dt.datetime.now().strftime('%H:%M')[:-1] == '00:0':
-            d[0] = d[28]
-    elif month not in [
-        1,
-        5,
-        7,
-        8,
-        10,
-        12,
-        ] and day == 1:
+        d[0] = d[28]
+
+    elif month==2 and day==1:
         today = str(truncate(old + data['101'] / 100 - d[31], 2)) \
             + '  kWh'
-        if dt.datetime.now().strftime('%H:%M')[:-1] == '00:0':
-            d[0] = d[30]
-    elif month in [
-        1,
-        5,
-        7,
-        8,
-        10,
-        12,
-        ] and day == 1:
+        d[0] = d[31]
+
+    elif month in [5,7,10,12] and day == 1:
         today = str(truncate(old + data['101'] / 100 - d[30], 2)) \
             + '  kWh'
-        if dt.datetime.now().strftime('%H:%M')[:-1] == '00:0':
-            d[0] = d[31]
+        d[0] = d[30]
+
+    elif month in [1,4,6,8,9,11] and day == 1:
+        today = str(truncate(old + data['101'] / 100 - d[31], 2)) \
+        + '  kWh'
+        d[0] = d[31]
     else:
         today = str(truncate(old + data['101'] / 100 - d[day - 1], 2)) \
             + '  kWh'

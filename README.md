@@ -1,5 +1,11 @@
-# SmartEnergyMeter_Tuya
+# SmartEnergyMeter
+Final Year Project
 Code to poll my smart energy meter and display it on a local webpage using flask
+
+# Members
+Akash Murthy
+Divya Sathya
+Siva Surya Babu
 
 # Webpage
 Displays Units generated (Total, Daily). Used pickle module to store values.
@@ -8,10 +14,11 @@ Displays Units generated (Total, Daily). Used pickle module to store values.
 Added Historical data tracking (monthly/yearly stats) and charts/graphs
 Estimation of losses
 Weather Data and clock
+ESP32 Port
 
 ## To do list
-Sinric integration for alexa control
-ESP32 port
+Data Analytics
+3 Phases implementation
 
 # WebSite
 ![WebPage](/Images/Table.png)

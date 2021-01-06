@@ -14,9 +14,9 @@ Sinric integration for alexa control
 ESP32 port
 
 # WebSite
-![WebPage](Table.png)
-![Chart](chart_js_graph.png)
+![WebPage](/Images/Table.png)
+![Chart](/Images/chart_js_graph.png)
 
 # Arduino Test
-![TungstenBulb](Tungsten_test.jpg)
-![LEDbulb](LED_test.jpg)
+![TungstenBulb](/Images/Tungsten_test.jpg)
+![LEDbulb](/Images/LED_test.jpg) 

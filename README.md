@@ -1,11 +1,12 @@
 # SmartEnergyMeter
 Final Year Project
-Code to poll my smart energy meter and display it on a local webpage using flask
+Code to poll smart energy meter and display it on a local webpage using flask
 
 # Members
 Akash Murthy
 Divya Sathya
 Siva Surya Babu
+Syed Irfan Ahmed 
 
 # Webpage
 Displays Units generated (Total, Daily). Used pickle module to store values.

@@ -25,7 +25,7 @@ Here we came across a good usecase scenario for out project where a user can be 
 
 The user has a window of opportunity to turn off appliances that are consuming too much power. The circuit breaker trips or the fuse burns out.
 
-![FuseBurnout](/Images/burntoutfuse.jpg)
+![FuseBurnout](/Images/burntoutfuse.jpg =300x)
 
 The dashboard shows that we have crossed the limit for this household.
 
@@ -40,5 +40,5 @@ The dashboard shows that we have crossed the limit for this household.
 - Syed Irfan Ahmed
 
 # Arduino Test
-![TungstenBulb](/Images/Tungsten_test.jpg)
-![LEDbulb](/Images/LED_test.jpg)
+![TungstenBulb](/Images/Tungsten_test.jpg =300x)
+![LEDbulb](/Images/LED_test.jpg =300x)

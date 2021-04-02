@@ -40,5 +40,5 @@ The dashboard shows that we have crossed the limit for this household.
 - Syed Irfan Ahmed
 
 # Arduino Test
-![TungstenBulb](/Images/Tungsten_test.jpg =300x)
-![LEDbulb](/Images/LED_test.jpg =300x)
+![TungstenBulb](/Images/Tungsten_test.jpg)
+![LEDbulb](/Images/LED_test.jpg)

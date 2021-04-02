@@ -25,7 +25,7 @@ Here we came across a good usecase scenario for out project where a user can be 
 
 The user has a window of opportunity to turn off appliances that are consuming too much power. The circuit breaker trips or the fuse burns out.
 
-![FuseBurnout](/Images/burntoutfuse.jpg =300x)
+![FuseBurnout](/Images/burntoutfuse.jpg)
 
 The dashboard shows that we have crossed the limit for this household.
 

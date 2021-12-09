@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "562617792997",
+    "project_id": "smartenergymeter",
+    "storage_bucket": "smartenergymeter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562617792997:android:617fc6c940f24f7a4fd70c",
+        "android_client_info": {
+          "package_name": "plic.tech.capstone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "562617792997-2ujud0r1d535qkho90djunvberuvulo0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "plic.tech.capstone",
+            "certificate_hash": "3c242d3b606c17c334f3c1e51853897e519083a2"
+          }
+        },
+        {
+          "client_id": "562617792997-7ftfnjrct1oq5gfts9tnr7d3u74hk2l9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuHesTvGMtlBZq1iAmiym8tyuqr7w5DeY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "562617792997-7ftfnjrct1oq5gfts9tnr7d3u74hk2l9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
